@@ -37,9 +37,25 @@ def main():
 	file.close()
 	client.close()
 
+	#client_UDP = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+	#client_UDP.connect(ADDR)
+
+	#file = open("test.txt", "r")
+	
+	#data = file.read()
+
+	#client.send("test.txt".encode(FORMAT))
+
+	#msg = client.recv(SIZE).decode(FORMAT)
+
+	#print(f"[SERVER]: {msg}")
+
+	#file.close()
+	#client_UDP.close()
+
 
 	hash_message = hash_file("test.txt")
-	print(hash_message)
+	print(f"Hash Message: {hash_message}")
 
 main()
 

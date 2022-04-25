@@ -44,7 +44,40 @@ def main():
 		conn.close()
 
 		print(f"[DISCONNECTED] {addr} disconnected.")
+	
+	#UDP_server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+	#UDP_server.bind(ADDR)
+	
+	#print("[LISTENING] UDP Server is listening.")
 
+	#while(True):
+		#conn, addr = server.accept()
+
+		#print(f"[NEW CONNECTION] {addr} connected.")
+
+		#filename = conn.recv(SIZE).decode(FORMAT)
+
+		#print(f"[RECV] Recieving the filename.")
+
+		#file = open(filename, "w")
+
+		#conn.send("Filename recieved.".encode(FORMAT))
+
+		#data = conn.recv(SIZE).decode(FORMAT)
+
+		#print(f"[RECV] Receiving the file data.")
+
+		#file.write(data)
+
+		#conn.send("File data received.".encode(FORMAT))
+
+		#file.close()
+
+		#conn.close()
+
+		#print(f"[DISCONNECTED] {addr} disconnected.")
+		
+		
 
 main()
 
