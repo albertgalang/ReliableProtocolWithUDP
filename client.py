@@ -1,31 +1,46 @@
 import socket
 import os
-import tqdm
+import hashlib
 
-HOST = socket.gethostname()  # The server's hostname or IP address
+def hash_file(filename):
+	h = hashlib.sha1()
+	
+	with open(filename, 'rb') as file:
+		chunk = 0
+		while chunk != b'':
+			chunk = file.read(1024)
+			h.update(chunk)
+	return h.hexdigest()
+
+IP = socket.gethostbyname(socket.gethostname())  # The server's hostname or IP address
 PORT = 65432  # The port used by the server
-SEPARATOR = "<SEPARATOR>"
-BUFFER_SIZE = 4096
-filename = "test.txt"
-filesize = os.path.getsize(filename)
+ADDR = (IP, PORT)
+FORMAT = "utf-8"
+SIZE = 1024
 
-s = socket.socket()
-print(f"[+] Connecting to {HOST} : {PORT}")
-s.connect((HOST, PORT))
-print("[+] Connected.")
-# send the filename and filesize
-s.send(f"{filename}{SEPARATOR}{filesize}".encode())
+def main():
 
-#start sending the file
-progress = tqdm.tqdm(range(filesize), f"Sending {filename}", unit="B", unit_scale = True, unit_divisor = 1024)
+	client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-with open(filename, "rb") as f:
-	while True:
-		bytes_read = f.read(BUFFER_SIZE)
-		if not bytes_read:
-			break
-		s.sendall(bytes_read)
-		progress.update(len(bytes_read))
-s.close()
+	client.connect(ADDR)
+
+	file = open("test.txt", "r")
+
+	data = file.read()
+
+	client.send("test.txt".encode(FORMAT))
+
+	msg = client.recv(SIZE).decode(FORMAT)
+
+	print(f"[SERVER]: {msg}")
+
+	file.close()
+	client.close()
+
+
+	hash_message = hash_file("test.txt")
+	print(hash_message)
+
+main()
 
 
