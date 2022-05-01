@@ -1,11 +1,26 @@
 import socket
 import os
+import hashlib
+import UDPServer
+
+
+def hash_file(filename):  # This is a function to get the hash name of the file that is sent over. This might have to be used in the server? I'm not sure but it grabs the hash name for the file and I have it outputing just to see that it is working.
+	h = hashlib.sha1()
+
+	with open(filename, 'rb') as file:
+		chunk = 0
+		while chunk != b'':
+			chunk = file.read(1024)
+			h.update(chunk)
+	return h.hexdigest()
+
 
 IP = socket.gethostbyname(socket.gethostname())  #(localhost)
 SERVER_PORT = 4455  # Port to listen on (non-privileged ports are > 1023)
 ADDR = (IP, SERVER_PORT)
 SIZE = 1024
 FORMAT = "utf-8"
+# f = open('received.txt', 'w')
 
 def main():
 
@@ -20,66 +35,84 @@ def main():
 	while True:
 		#Server has accepted the connection from the client.
 		conn, addr = server.accept()
-
 		print(f"[NEW CONNECTION] {addr} connected.")
 
+		# file name
 		filename = conn.recv(SIZE).decode(FORMAT) #Recieving the filename from the client.
-
 		print(f"[RECV] Receiving the filename.")
-
-		file = open(filename, "w")
-
 		conn.send("Filename recieved.".encode(FORMAT))
 		print(f"Filename: {filename}")
 
-		#recieving file data from the client
-		data = conn.recv(SIZE).decode(FORMAT)
+		# hash message
+		hash_message = conn.recv(SIZE).decode(FORMAT) # Received hash message
+		print(f"[RECV] Receiving the hash message.")
+		conn.send("hash message received.".encode(FORMAT))
+		print(f"hash message: {hash_message}")
 
-		print(f"[RECV] Receiving the file data.")
 
-		file.write(data)
+		# write_to_file = 'received.txt'
+		# file = open(write_to_file, "w")
 
-		conn.send("File data received.".encode(FORMAT))
-		
-		file.close() #Closing the file
+		# recieving file data from the client
+		# data = conn.recv(SIZE).decode(FORMAT)
+
+		# print(f"[RECV] Receiving the file data. : ", data)
+
+		# file.write(data)
+		#
+		# conn.send("File data received.".encode(FORMAT))
+		#
+		# file.close() #Closing the file
 
 		conn.close() #Closing the connection from the client.
 
 		print(f"[DISCONNECTED] {addr} disconnected.")
-	#This is where I was messing with the UDP stuff kind of lol. It's not that great... it was messing up the code. 
-	#UDP_server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-	#UDP_server.bind(ADDR)
-	
-	#print("[LISTENING] UDP Server is listening.")
 
-	#while(True):
-		#conn, addr = server.accept()
 
-		#print(f"[NEW CONNECTION] {addr} connected.")
 
-		#filename = conn.recv(SIZE).decode(FORMAT)
+		# UDP
+		UDP_server = UDPServer.start_server(ADDR, SIZE)
 
-		#print(f"[RECV] Recieving the filename.")
+		buffer_in_address = UDP_server.recvfrom(SIZE)
 
-		#file = open(filename, "w")
+		message = buffer_in_address[0]
+		address = buffer_in_address[1]
 
-		#conn.send("Filename recieved.".encode(FORMAT))
+		client_message = "Message from client : {}".format(message)
+		client_address = "Client IP address : {}".format(address)
 
-		#data = conn.recv(SIZE).decode(FORMAT)
+		print(message)
+		print(client_message)
+		print(client_address)
 
-		#print(f"[RECV] Receiving the file data.")
+		# reliable UDP check
+		hash_data = hash_file(filename=filename)
+		print(f"Hash data: {hash_data}")
 
-		#file.write(data)
+		if hash_data == hash_message:
+			print("Packets received in order!")
 
-		#conn.send("File data received.".encode(FORMAT))
+		#UDP_server.sendto()
 
-		#file.close()
-
-		#conn.close()
-
-		#print(f"[DISCONNECTED] {addr} disconnected.")
-		
-		
+	# while (True):
+	# 	buffer_in_address = UDP_server.recvfrom(buffer_size)
+	#
+	# 	message = buffer_in_address[0]
+	# 	address = buffer_in_address[1]
+	#
+	# 	client_message = "Message from client : { }".format(message)
+	# 	client_address = "Client IP address : { }".format(address)
+	#
+	# 	print(message)
+	# 	print(client_message)
+	# 	print(client_address)
+	#
+	# 	# reliable UDP check
+	# 	hash_data = hash_file(filename=write_to_file)
+	# 	print(f"Hash data: {hash_data}")
+	#
+	#
+	# 	UDP_server.sendto()
 
 main()
 
