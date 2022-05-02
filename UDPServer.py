@@ -1,6 +1,6 @@
 import socket
 
-def start_server(ADDR, buffer_size):
+def start_server(ADDR, SIZE):
 
     # server side UDP socket
     server = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
@@ -8,6 +8,6 @@ def start_server(ADDR, buffer_size):
     # bind the IP address and port
     server.bind(ADDR)
 
-    print("UDP server is listening...")
+    print("[LISTENING] UDP server is listening...")
 
     return server
