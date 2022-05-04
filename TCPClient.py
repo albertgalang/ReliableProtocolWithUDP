@@ -7,12 +7,12 @@ def send(ADDR, FORMAT, SIZE):
 	client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 	client.connect(ADDR)  # Connecting to the server
 
-	# file name
+	# send file name
 	client.send("test.txt".encode(FORMAT))  # Sending the filename to the server
 	msg = client.recv(SIZE).decode(FORMAT)  # Updating the server message
 	print(f"[SERVER]: {msg}")
 
-	# hash
+	# send file hash
 	file = open("test.txt", "r")  # Opening and reading the file data.
 	data = file.read()
 	hash_message = get_sha(data)

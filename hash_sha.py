@@ -13,6 +13,7 @@ def hash_file(filename):  # This is a function to get the hash name of the file.
     return h.hexdigest()
 
 
+# get SHA256 of data
 def get_sha(data):
 
     return hashlib.sha256(data.encode()).hexdigest()

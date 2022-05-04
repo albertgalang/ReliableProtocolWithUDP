@@ -1,5 +1,6 @@
 import socket
 
+
 def start_server(ADDR, FORMAT, SIZE):
 
     # TCP
@@ -17,13 +18,13 @@ def start_server(ADDR, FORMAT, SIZE):
         conn, addr = server.accept()
         print(f"[NEW CONNECTION] {addr} connected.")
 
-        # file name
+        # file name received
         filename = conn.recv(SIZE).decode(FORMAT)  # Recieving the filename from the client.
         print(f"[RECV] Receiving the filename.")
-        conn.send("Filename recieved.".encode(FORMAT))
+        conn.send("Filename received.".encode(FORMAT))
         print(f"Filename: {filename}")
 
-        # hash message
+        # hash message received
         hash_message = conn.recv(SIZE).decode(FORMAT)  # Received hash message
         print(f"[RECV] Receiving the hash message.")
         conn.send("hash message received.".encode(FORMAT))
@@ -33,5 +34,7 @@ def start_server(ADDR, FORMAT, SIZE):
 
         print(f"[DISCONNECTED] {addr} disconnected.")
 
+        # keep server alive when filename and hash message are empty.
+        # keep listening for connections and await for client.
         if bool(filename) and bool(hash_message):
             return filename, hash_message

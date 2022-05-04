@@ -11,6 +11,7 @@ def send(ADDR, FORMAT, SIZE, data):
         msg_from_server = client_socket.recvfrom(SIZE)
         print(f"[SERVER]: {msg_from_server[0].decode(FORMAT)}")
 
+        # resend the data at hashes mismatch.
         if msg_from_server[0].decode(FORMAT) == "False":
             print("Hashes don't Match! Packets NOT received reliably!")
             print("Resending...")
