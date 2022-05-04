@@ -1,5 +1,4 @@
 import socket
-
 import hash_sha
 
 

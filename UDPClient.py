@@ -1,5 +1,5 @@
 import socket
-import os
+
 
 def send(ADDR, FORMAT, SIZE, data):
 

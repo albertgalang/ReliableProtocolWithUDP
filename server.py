@@ -1,8 +1,5 @@
 import socket
-import os
-import hashlib
 import UDPServer
-import hash_sha
 import TCPServer
 
 IP = socket.gethostbyname(socket.gethostname())  # (localhost)
