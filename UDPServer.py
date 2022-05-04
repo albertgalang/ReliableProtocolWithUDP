@@ -36,7 +36,8 @@ def start_server(ADDR, FORMAT, SIZE, HASH_CHECK):
         if hash_data == HASH_CHECK:
             print("Hashes Match! Packets received reliably!")
             server.sendto("Hashes Match! Packets received reliably!".encode(FORMAT), address)
+            server.close()
             return message
         else:
             print("Hashes don't Match! Packets NOT received reliably!")
-            server.sendto("Hashes don't Match! Packets NOT received reliably!".encode(FORMAT), address)
+            server.sendto("False".encode(FORMAT), address)
