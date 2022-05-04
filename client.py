@@ -21,9 +21,7 @@ def main():
 	UDPClient.send(ADDR, FORMAT, SIZE, data)
 
 
-
-
-
-main()
+if __name__ == "__main__":
+	main()
 
 

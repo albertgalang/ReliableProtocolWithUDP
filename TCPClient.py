@@ -1,15 +1,7 @@
 import socket
+from hash_sha import *
 import hashlib
 
-def hash_file(filename): #This is a function to get the hash name of the file. 
-	h = hashlib.sha1()
-	
-	with open(filename, 'rb') as file:
-		chunk = 0
-		while chunk != b'':
-			chunk = file.read(1024)
-			h.update(chunk)
-	return h.hexdigest() 
 
 def send(ADDR, FORMAT, SIZE):
 	#Starting the TCP socket
@@ -22,7 +14,10 @@ def send(ADDR, FORMAT, SIZE):
 	print(f"[SERVER]: {msg}")
 
 	# hash
-	hash_message = hash_file("test.txt")
+	#hash_message = hash_file("test.txt")
+	file = open("test.txt", "r") #Opening and reading the file data.
+	data = file.read()
+	hash_message = get_sha(data)
 	print(f"Hash Message: {hash_message}") #Here is just an output showing the hash message
 	client.send(hash_message.encode(FORMAT)) #Sending hash message to server
 	msg = client.recv(SIZE).decode(FORMAT) #Updating the server message

@@ -8,10 +8,6 @@ def send(ADDR, FORMAT, SIZE, data):
 
     client_socket.sendto(data.encode(FORMAT), ADDR)
 
-    msg_from_server = client_socket.recvfrom(SIZE).decode(FORMAT)
-    
+    msg_from_server = client_socket.recvfrom(SIZE)
 
-    return "Message from server: { }".format(msg_from_server[0])
-
-
-
+    print(f"[SERVER]: {msg_from_server[0]}")
