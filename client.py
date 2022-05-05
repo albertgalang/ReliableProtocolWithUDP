@@ -1,6 +1,8 @@
 import socket
 import UDPClient
 import TCPClient
+import checkFile
+import sys
 
 IP = socket.gethostbyname(socket.gethostname())  # The server's hostname or IP address
 PORT = 4455  # The port used by the server
@@ -10,14 +12,19 @@ SIZE = 1024
 
 
 def main():
-
+	print("Make sure the server is listening before entering the file name!")
+	filename = input("Enter the file name that you want transfered: ")
+	result = checkFile.checkFile(filename)
 	# TCP: The client will initiate a connection to the server.
 	#      As part of the protocol, the client will send the file information
 	#      after a connection is established. File name and its SHA256 value
 	#      is sent.
-	TCPClient.send(ADDR, FORMAT, SIZE)
+	if(result == True):
+		TCPClient.send(ADDR, FORMAT, SIZE, filename)
+	else:
+		sys.exit()
 
-	file = open("test.txt", "r")  # Opening and reading the file data.
+	file = open(filename, "r")  # Opening and reading the file data.
 	data = file.read()
 	file.close()  # Closing the file
 

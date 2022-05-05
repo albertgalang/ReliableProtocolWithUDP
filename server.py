@@ -2,6 +2,7 @@ import socket
 import UDPServer
 import TCPServer
 
+
 IP = socket.gethostbyname(socket.gethostname())  # (localhost)
 SERVER_PORT = 4455  # Port to listen on (non-privileged ports are > 1023)
 ADDR = (IP, SERVER_PORT)
@@ -19,6 +20,7 @@ def main():
     #      will wait for the client to send again.
     filename, hash_message = TCPServer.start_server(ADDR, FORMAT, SIZE)
 
+   
     # UDP: Start server and listen for incoming datagrams.
     #      The SHA256 of the acquired data is taken.
     #      The acquired data SHA256 is checked against the SHA256 hash_message

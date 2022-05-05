@@ -1,4 +1,6 @@
 import socket
+import checkFile
+import sys
 
 
 def start_server(ADDR, FORMAT, SIZE):
@@ -18,8 +20,9 @@ def start_server(ADDR, FORMAT, SIZE):
         conn, addr = server.accept()
         print(f"[NEW CONNECTION] {addr} connected.")
 
-        # file name received
+        #file name recieved
         filename = conn.recv(SIZE).decode(FORMAT)  # Recieving the filename from the client.
+
         print(f"[RECV] Receiving the filename.")
         conn.send("Filename received.".encode(FORMAT))
         print(f"Filename: {filename}")
